@@ -16,6 +16,11 @@ export class TeamController {
     return this.teamService.findAll();
   }
 
+  @Post('/generate')
+  async generateTeams() {
+    return this.teamService.generateTeams();
+  }
+
   @Get(':id')
   async findById(@Param('id', ParseUUIDPipe) id: string): Promise<TeamDto> {
     return this.teamService.findById(id);
