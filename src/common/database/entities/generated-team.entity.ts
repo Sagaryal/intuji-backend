@@ -2,11 +2,11 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseRecordEntity } from './base-record.entity';
 import { TeamPlayerCombinationEntity } from './team-player-combination.entity';
 
-@Entity('teams')
-export class TeamEntity extends BaseRecordEntity {
-  @Column()
-  name: string;
+@Entity('generated_teams')
+export class GeneratedTeamEntity extends BaseRecordEntity {
+  @Column({ unique: true })
+  uniqueId: string;
 
-  @OneToMany(() => TeamPlayerCombinationEntity, (combination) => combination.team)
+  @OneToMany(() => TeamPlayerCombinationEntity, (combination) => combination.generatedTeam)
   combinations: TeamPlayerCombinationEntity[];
 }
