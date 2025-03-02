@@ -13,7 +13,9 @@ export class PlayerService {
   }
 
   async findAll(): Promise<PlayerDto[]> {
-    const playerEntities: PlayerEntity[] = await this.playerRepository.find();
+    const playerEntities: PlayerEntity[] = await this.playerRepository.find({
+      order: { createdAt: 'ASC' },
+    });
     return PlayerDto.fromEntity(playerEntities);
   }
 

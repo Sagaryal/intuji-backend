@@ -21,7 +21,9 @@ export class TeamService {
   }
 
   async findAll(): Promise<TeamDto[]> {
-    const teamEntities: TeamEntity[] = await this.teamRepository.find();
+    const teamEntities: TeamEntity[] = await this.teamRepository.find({
+      order: { createdAt: 'ASC' },
+    });
     return TeamDto.fromEntity(teamEntities);
   }
 
