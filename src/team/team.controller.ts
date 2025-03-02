@@ -1,24 +1,24 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, ParseUUIDPipe, NotFoundException } from '@nestjs/common';
 import { TeamService } from './team.service';
-import { CreateTeamDto, TeamDto, UpdateTeamDto } from './dtos/team.dto';
+import { CreateTeamDto, GenerateTeamDto, TeamDto, UpdateTeamDto } from './dtos/team.dto';
 
 @Controller('teams')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
   @Post()
-  create(@Body() createTeamDto: CreateTeamDto) {
+  async create(@Body() createTeamDto: CreateTeamDto): Promise<TeamDto> {
     return this.teamService.create(createTeamDto);
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<TeamDto[]> {
     return this.teamService.findAll();
   }
 
   @Post('/generate-teams')
-  async generateTeams() {
-    return this.teamService.generateTeams();
+  generateTeams(@Body() generateTeamDto: GenerateTeamDto): Promise<any> {
+    return this.teamService.generateTeams(generateTeamDto);
   }
 
   @Get('generated-teams/:uniqueId')

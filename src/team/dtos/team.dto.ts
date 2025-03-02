@@ -24,3 +24,8 @@ export class TeamDto extends CreateTeamDto {
     return transformToDto(this, entity);
   }
 }
+
+export class GenerateTeamDto {
+  @IsNotEmpty()
+  title: string;
+}

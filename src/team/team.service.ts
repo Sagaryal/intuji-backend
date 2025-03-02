@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TeamEntity } from '../common/database/entities/team.entity';
-import { CreateTeamDto, TeamDto, UpdateTeamDto } from './dtos/team.dto';
+import { CreateTeamDto, GenerateTeamDto, TeamDto, UpdateTeamDto } from './dtos/team.dto';
 import { TeamRepository } from '../common/database/repositories/team.repository';
 import { PlayerRepository } from '../common/database/repositories/player.repository';
 import { GeneratedTeamRepository } from '../common/database/repositories/generated-team.repository';
@@ -41,7 +41,9 @@ export class TeamService {
     return { message: `Given team with id: ${id} has been deleted` };
   }
 
-  async generateTeams(): Promise<any> {
+  async generateTeams(generateTeamDto: GenerateTeamDto): Promise<any> {
+    const { title } = generateTeamDto;
+
     const players = await this.playerRepository.find();
     const teams = await this.teamRepository.find();
 
@@ -65,6 +67,7 @@ export class TeamService {
 
     const generatedTeam = this.generatedTeamRepository.create({
       uniqueId: uniqueId,
+      title: title,
     });
 
     await this.generatedTeamRepository.save(generatedTeam);
@@ -101,8 +104,9 @@ export class TeamService {
 
     return {
       uniqueId,
+      title,
       generatedTeam,
-      teamResults,
+      teams: teamResults,
     };
   }
 
@@ -117,7 +121,7 @@ export class TeamService {
     });
 
     if (!generatedTeam) {
-      throw new Error('Generated team not found.');
+      throw new NotFoundException('Generated team not found.');
     }
 
     const teamAssignments = {};
@@ -139,6 +143,10 @@ export class TeamService {
       });
     });
 
-    return teamAssignments;
+    return {
+      title: generatedTeam.title,
+      uniqueId: generatedTeam.uniqueId,
+      teams: teamAssignments,
+    };
   }
 }

@@ -7,6 +7,9 @@ export class GeneratedTeamEntity extends BaseRecordEntity {
   @Column({ unique: true })
   uniqueId: string;
 
+  @Column({ default: 'Untitled Team' })
+  title: string;
+
   @OneToMany(() => TeamPlayerCombinationEntity, (combination) => combination.generatedTeam)
   combinations: TeamPlayerCombinationEntity[];
 }
