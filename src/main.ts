@@ -11,6 +11,8 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('/api');
+
   // For testing purposes allow all
   app.enableCors();
   await app.listen(process.env.PORT ?? 3000);
